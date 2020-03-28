@@ -1,5 +1,6 @@
+import { getElementById } from './compatdom'
 
-export const TextToSpeech = () => {
+export const TextToSpeech = {
 
   // https://developers.google.com/web/updates/2014/01/Web-apps-that-talk-Introduction-to-the-Speech-Synthesis-API
 

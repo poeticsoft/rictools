@@ -3,25 +3,28 @@ import React, {
   useState,
   useEffect
 } from 'react'
-import * as doActions from '~/redux/actions'
+import * as Actions from '~/redux/actions'
 import Hammer from 'react-hammerjs'
+import { connect } from 'react-redux'
 
-const APP = props => {
-
-  const [ action, setAction ] = useState()
-  const [ data, setData ] = useState()
+const APPComponent = props => {
 
   const doAction = event => {
 
-    setAction(event.type)
-    setData(event.direction)
+    props.dispatch(Actions.uaiDoAction({
+      type: event.type,
+      direction: event.direction
+    }))
   }
 
   const options = {
     recognizers: {
       tap: {
-        time: 10,
-        threshold: 10
+        time: 600,
+        threshold: 100
+      },
+      doubletap: {
+        taps: 2
       },
       rotate : { 
         enable: true
@@ -37,8 +40,8 @@ const APP = props => {
   }
 
   return <div className="APP">
-    <div className="Action Type">{ action }</div>
-    <div className="Action Data">{ data }</div>
+    <div className="Action Type">{ props.action }</div>
+    <div className="Action Data">{ props.data }</div>
     <Hammer
       onTap={ doAction }
       onDoubleTap={ doAction }
@@ -46,14 +49,15 @@ const APP = props => {
       onPinchIn={ doAction }
       onPinchOut={ doAction }
       onPress={ doAction }
-      onPressUp={ doAction }
-      onRotateMove={ doAction }
-      onSwipe={ doAction }
       options={ options }
     >
       <div className="Sensor"></div>
     </Hammer>
   </div>
 }
+
+const APP = connect(state => ({
+  uai: state.uai
+}))(APPComponent)
 
 export default APP
