@@ -8,7 +8,7 @@ import Hammer from 'react-hammerjs'
 import { connect } from 'react-redux'
 
 const APPComponent = props => {
-
+  
   const doAction = event => {
 
     props.dispatch(Actions.uaiDoAction({
@@ -19,25 +19,16 @@ const APPComponent = props => {
 
   const options = {
     recognizers: {
-      tap: {
-        time: 600,
-        threshold: 100
-      },
-      doubletap: {
-        taps: 2
-      },
-      rotate : { 
-        enable: true
-      },
       pinch: { 
         enable: true
-      },
-      swipe: { 
-        enable: true,
-        direction: Hammer.DIRECTION_ALL
       }
     }
   }
+
+  useEffect(() => {
+
+    props.dispatch(Actions.ttsInit())
+  }, [])
 
   return <div className="APP">
     <div className="Action Type">{ props.action }</div>
@@ -52,7 +43,11 @@ const APPComponent = props => {
       options={ options }
     >
       <div className="Sensor"></div>
-    </Hammer>
+    </Hammer>    
+    <button
+      id="SpeechButton"
+      style={{ display: 'none' }}
+    />
   </div>
 }
 

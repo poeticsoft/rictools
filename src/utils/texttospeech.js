@@ -1,43 +1,38 @@
 import { getElementById } from './compatdom'
+import * as Actions from '~/redux/actions'
+import store from '~/redux/store'
 
-export const TextToSpeech = {
+let msg
 
-  // https://developers.google.com/web/updates/2014/01/Web-apps-that-talk-Introduction-to-the-Speech-Synthesis-API
+const startSpeech = () => {
 
-  /* SPEECH */
+  const SpeechButton = getElementById('SpeechButton')
 
-  var msg
+  msg = new SpeechSynthesisUtterance();
+  msg.lang = 'es-ES';
 
-  function startSpeech() {
+  msg.text = 'Buenos días, empezamos a trabajaaaar???';
 
-    msg = new SpeechSynthesisUtterance();
-    msg.text = 'Buenos días, empezamos a trabajaaaar???';
-    msg.lang = 'es-ES';
+  msg.onend = function(event) { store.dispatch(Actions.ttsReady(true)) };
+  msg.onerror = function(event) { store.dispatch(Actions.ttsReady('Error ' + event.error)); };
 
-    msg.onend = function(event) {
+  speechSynthesis.speak(msg);
+}
 
-      console.log('Finished in ' + event.elapsedTime + ' seconds.');
-    };
+export const init = () => {
 
-    msg.onerror = function(event) { 
-      
-      console.log('Error ' + event.error);
-    };
+  const SpeechButton = getElementById('SpeechButton')
 
-    speechSynthesis.speak(msg);
-  }
-
-  function speak(text) {
-
-    msg.text = text;
-    speechSynthesis.speak(msg);
-  }
+  console.log(SpeechButton)
 
   SpeechButton.addEventListener('click', startSpeech)
   SpeechButton.click()
+}
 
-  setTimeout(() => {
-    
-    speak('dame una orden')
-  }, 3000)     
+export const speak = text => {
+
+  store.dispatch(Actions.ttsReady(false))
+
+  msg.text = text;
+  speechSynthesis.speak(msg);
 }

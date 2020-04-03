@@ -78,8 +78,6 @@ const reducers = {
 
 const uai = (state = initialState, action) => {
 
-  console.log(action)
-
   return reducers[action.type] ? 
     reducers[action.type](state, action)
     :

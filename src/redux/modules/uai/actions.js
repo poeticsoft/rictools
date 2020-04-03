@@ -1,6 +1,7 @@
 
 import * as Actions from '~/redux/actions'
 
+import { speak } from '~/utils/texttospeech'
 const panDirections = {
   2: 'LEFT',
   4: 'RIGHT',
@@ -9,7 +10,6 @@ const panDirections = {
 }
 
 export const uaiDoAction = data => (dispatch, getState) => {
-
   if(
     data.type == 'pan' && 
     data.direction == 1
@@ -24,5 +24,8 @@ export const uaiDoAction = data => (dispatch, getState) => {
         ''
     )
 
-    dispatch({ type: actionName})
+    speak(actionName.replace(/\_/g, ' '))
+
+
+  dispatch({ type: actionName})
 }
